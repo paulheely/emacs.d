@@ -99,3 +99,80 @@
         (when (file-exists-p private-file)
           (load-file private-file)))))
    #+END_SRC
+** Sane defaults
+
+   These are what /I/ consider to be saner defaults.
+
+   We can set variables to whatever value we'd like using =setq=.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq auto-revert-interval 1            ; Refresh buffers fast
+         custom-file (make-temp-file "")   ; Discard customization's
+         default-input-method "TeX"        ; Use TeX when toggling input method
+         echo-keystrokes 0.1               ; Show keystrokes asap
+         inhibit-startup-message t         ; No splash screen please
+         initial-scratch-message nil       ; Clean scratch buffer
+         recentf-max-saved-items 100       ; Show more recent files
+         ring-bell-function 'ignore        ; Quiet
+         sentence-end-double-space nil)    ; No double space
+   ;; Some mac-bindings interfere with Emacs bindings.
+   (when (boundp 'mac-pass-command-to-system)
+     (setq mac-pass-command-to-system nil))
+   #+END_SRC
+
+   Some variables are buffer-local, so changing them using =setq= will only
+   change them in a single buffer. Using =setq-default= we change the
+   buffer-local variable's default value.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq-default fill-column 79                    ; Maximum line width
+                 truncate-lines t                  ; Don't fold lines
+                 indent-tabs-mode nil              ; Use spaces instead of tabs
+                 split-width-threshold 160         ; Split verticly by default
+                 split-height-threshold nil        ; Split verticly by default
+                 auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+   #+END_SRC
+
+   The =load-path= specifies where Emacs should look for =.el=-files (or
+   Emacs lisp files). I have a directory called =site-lisp= where I keep all
+   extensions that have been installed manually (these are mostly my own
+   projects).
+
+   #+BEGIN_SRC emacs-lisp
+   (let ((default-directory (concat user-emacs-directory "site-lisp/")))
+     (when (file-exists-p default-directory)
+       (setq load-path
+             (append
+              (let ((load-path (copy-sequence load-path)))
+                (normal-top-level-add-subdirs-to-load-path)) load-path))))
+   #+END_SRC
+
+   Answering /yes/ and /no/ to each question from Emacs can be tedious, a
+   single /y/ or /n/ will suffice.
+
+   #+BEGIN_SRC emacs-lisp
+   (fset 'yes-or-no-p 'y-or-n-p)
+   #+END_SRC
+
+   To avoid file system clutter we put all auto saved files in a single
+   directory.
+
+   #+BEGIN_SRC emacs-lisp
+   (defvar emacs-autosave-directory
+     (concat user-emacs-directory "autosaves/")
+     "This variable dictates where to put auto saves. It is set to a
+     directory called autosaves located wherever your .emacs.d/ is
+     located.")
+
+   ;; Sets all files to be backed up and auto saved in a single directory.
+   (setq backup-directory-alist
+         `((".*" . ,emacs-autosave-directory))
+         auto-save-file-name-transforms
+         `((".*" ,emacs-autosave-directory t)))
+   #+END_SRC
+
+   Set =utf-8= as preferred coding system.
+
+   #+BEGIN_SRC emacs-lisp
+   (set-language-environment "UTF-8")
+   #+END_SRC
