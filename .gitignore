@@ -13,4 +13,8 @@
 # cached web files
 url/
 
+# package related
 elpa/
+
+# private stuff that I don't want checked in or local
+private.el
