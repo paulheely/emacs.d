@@ -222,12 +222,25 @@
   #+END_SRC
   
 * Install and Configure Packages
-** magit
-   Load up the Magic Git interface
-   
+
+** Magic Git (magit)
    #+BEGIN_SRC emacs-lisp
    (use-package magit
      :ensure t
      :bind (("C-x g" . magit-status)))
    #+END_SRC
 
+** Highlight Current Line (hl-line)
+   #+BEGIN_SRC emacs-lisp :tangle no
+   (use-package hl-line
+     :config (global-hl-line-mode t))
+   #+END_SRC
+
+** OSX Path From Shell (exec-path-from-shell)
+   #+BEGIN_SRC emacs-lisp
+   (use-package exec-path-from-shell
+     :ensure t
+     :config
+     (when (memq window-system '(mac ns))
+       (exec-path-from-shell-initialize)))
+   #+END_SRC
