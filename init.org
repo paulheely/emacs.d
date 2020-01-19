@@ -9,6 +9,9 @@
 
 * Credit
   Original files that form the basis of this customized version were downloaded from Lars Tveito's GitHub repository, [[https://github.com/larstvei/dot-emacs.git]].
+
+  Additonal ideas from:
+  - Howard Abrams, 
   
 * About
 
@@ -99,7 +102,7 @@
          (load-file private-file)))))
   #+END_SRC
 
-* Packages
+* Package Control
 ** Package Manager
    Load some additional repos to pull packages from
    
@@ -196,4 +199,34 @@
    
    #+BEGIN_SRC emacs-lisp
    (setq-default tab-always-indent 'complete)
+   #+END_SRC
+* Modes
+
+  Turn some stuff off
+  
+  #+BEGIN_SRC emacs-lisp
+  (dolist (mode
+           '(tool-bar-mode
+             scroll-bar-mode))
+    (funcall mode 0))
+  #+END_SRC
+  
+  And turn other stuff on
+
+  #+BEGIN_SRC emacs-lisp
+  (dolist (mode
+           '(column-number-mode
+             delete-selection-mode
+             show-paren-mode))
+    (funcall mode 1))
+  #+END_SRC
+  
+* Install and Configure Packages
+** magit
+   Load up the Magic Git interface
+   
+   #+BEGIN_SRC emacs-lisp
+   (use-package magit
+     :ensure t
+     :bind (("C-x g" . magit-status)))
    #+END_SRC
