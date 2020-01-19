@@ -221,7 +221,18 @@
     (funcall mode 1))
   #+END_SRC
   
-* Install and Configure Packages
+* Configure Built-In Packages
+  
+** dired
+   #+BEGIN_SRC emacs-lisp
+   (use-package dired
+     :config
+     (if (eq system-type 'darwin)
+         (setq dired-use-ls-dired t
+               insert-directory-program "gls")))
+   #+END_SRC
+
+* Install & Configure External Packages
 
 ** Magic Git (magit)
    #+BEGIN_SRC emacs-lisp
@@ -241,6 +252,6 @@
    (use-package exec-path-from-shell
      :ensure t
      :config
-     (when (memq window-system '(mac ns))
+     (if (eq system-type 'darwin)
        (exec-path-from-shell-initialize)))
    #+END_SRC
