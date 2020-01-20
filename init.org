@@ -18,7 +18,8 @@
   An attempt to try org-mode with tangle to keep my emacs configuration well documented.
 
 * Meta
-   
+
+** Tangle init.org   
   All changes to the configuration should be done in =init.org=, *not* in
   =init.el=. Any changes in the =init.el= will be overwritten by saving
   =init.org=. The =init.el= in this repo should not be tracked by git, and
@@ -90,6 +91,18 @@
   (add-hook 'after-save-hook 'tangle-init)
   #+END_SRC
 
+** Load local vars  
+   Some varibles, such as my list of org agendar files is different based on what computer I'm using, work vs personal 
+
+   Example content of local-vars.el
+   
+
+   #+BEGIN_SRC emacs-lisp :tangle no
+   (when
+   #+END_SRC
+   
+
+** Load private file
   I'd like to keep a few settings private, so we load a =private.el= if it
   exists after the init-file has loaded.
 
@@ -254,4 +267,19 @@
      :config
      (if (eq system-type 'darwin)
        (exec-path-from-shell-initialize)))
+   #+END_SRC
+
+* Org Mode
+  Org mode is a beast and has its own config block
+
+** Org-Mode Setup  
+   Enable org-mode automatically for most buffers that are not source code and enable some global keys
+
+   #+BEGIN_SRC emacs-lisp
+   (add-to-list 'auto-mode-alist '("\\.\\(org|org_archive||txt\\)$" . org-mode))
+   (require 'org)
+   
+   (global-set-key "\C-cl" 'org-store-link)
+   (global-set-key "\C-ca" 'org-agenda)
+   (global-set-key "\C-cb" 'org-iswitchb)
    #+END_SRC
