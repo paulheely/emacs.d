@@ -18,3 +18,6 @@ elpa/
 
 # private stuff that I don't want checked in or local
 private.el
+
+init.el
+transient/
